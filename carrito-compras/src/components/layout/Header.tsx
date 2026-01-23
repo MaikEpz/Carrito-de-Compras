@@ -1,7 +1,7 @@
 'use client'
 import { useState } from 'react'
-import logo from '../assets/Hogar-logo.png'
-import { useCart } from '../context/CartContext'
+import logo from '@/assets/Hogar-logo.png'
+import { useCart } from '../../context/CartContext'
 
 interface HeaderProps {
   onSearch?: (query: string) => void
@@ -52,7 +52,8 @@ export function Header({ onSearch }: HeaderProps) {
   }
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-black bg-background backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <>
+    <header className="sticky top-0 z-50 w-full border-b border-black/8 bg-background backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         { /*Logo*/}
         <a href="/" className="flex items-center gap-2">
@@ -183,7 +184,35 @@ export function Header({ onSearch }: HeaderProps) {
         </div>
       )}
     </header>
+      {/*Cart Sidebar Overlay */}
+      {state.isOpen && (
+        <div className="fixed inset-0 z-50">
+          { /*Backdrop */}
+          <div
+            className="absolute inset-0 bg-black/50"
+            onClick={toggleCart}
+          />
 
+          { /*Sidebar */}
+          <div className="absolute right-0 top-0 h-full w-full max-w-lg bg-card shadow-xl">
+            <div className="flex h-full flex-col">
+              { /*Header */}
+              <div className="flex items-center justify-between border-b border-border px-6 py-4">
+                <h2 className="text-lg font-semibold text-foreground">Tu Carrito</h2>
+                <button
+                  onClick={toggleCart}
+                  className="flex h-8 w-8 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
+                >
+                  <CloseIcon className="h-5 w-5" />
+                  <span className="sr-only">Cerrar</span>
+                </button>
+              </div>
+              
+            </div>
+          </div>
+        </div>
+      )}          
+    </>
   )
 }
 
