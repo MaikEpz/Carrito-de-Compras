@@ -1,1 +1,23 @@
 @import "tailwindcss";
+
+:root {
+  --background: oklch(1 0 0); /*Background - White*/
+  --primary: oklch(0.205 0 0); /*Primary  -  Black*/
+  --secondary: oklch(0.97 0 0); /*Secondary - Light Gray*/
+  --foreground: oklch(0.145 0 0); /*Foreground(Text) - Black*/
+  --muted-foreground: oklch(0.556 0 0); /*Muted Foreground(Text) - Medium Gray*/
+  --primary-foreground: oklch(0.985 0 0); /*Primary Foreground(Text) - Light Gray*/
+  --secondary-foreground: oklch(0.205 0 0); /*Secondary Foreground(Text) - Black*/
+  --border: oklch(0.922 0 0); /*Border - Light Gray*/
+}
+
+@theme {
+  --color-border: var(--border);
+  --color-background: var(--background);
+  --color-secondary: var(--secondary);
+  --color-primary: var(--primary);
+  --color-foreground: var(--foreground);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary-foreground: var(--secondary-foreground);
+}
