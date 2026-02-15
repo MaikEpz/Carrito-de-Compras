@@ -1,33 +1,12 @@
-'use client'
-
 import { useState, useEffect, useMemo } from 'react'
 import { useLocation } from 'react-router'
-import { mockProducts } from '@/lib/products'
-import { ProductGrid } from './ProductGrid'
-
-function CloseIcon({ className }: { className?: string }) {
-  return (
-    <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-    </svg>
-  )
-}
-
-function SearchIcon({ className }: { className?: string }) {
-  return (
-    <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-    </svg>
-  )
-}
-
-function ChevronIcon({ className }: { className?: string }) {
-  return (
-    <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-    </svg>
-  )
-}
+import { searchProducts } from '@/lib/products'
+import type { Product } from '@/lib/types'
+import { CloseIcon } from '@/assets/icons/CloseIcon'
+import { ProductView } from './ProductView'
+import { ChevronIcon } from '@/assets/icons/ChevronIcon'
+import { GridIcon } from '@/assets/icons/GridIcon'
+import { ListIcon } from '@/assets/icons/ListIcon'
 
 const categories = ['Muebles', 'Decoración', 'Iluminación', 'Textiles']
 const priceRanges = [
@@ -37,7 +16,7 @@ const priceRanges = [
   { label: 'Más de $200', min: 200, max: Infinity }
 ]
 
-export function Catalog() {
+export function Catalogo() {
   const location = useLocation()
   const { categoryParam, searchParam } = useMemo(() => {
     const params = new URLSearchParams(location.search)
@@ -60,27 +39,70 @@ export function Catalog() {
   const [sortBy, setSortBy] = useState<'default' | 'price-asc' | 'price-desc' | 'name'>('name')
   const [showCategoryDropdown, setShowCategoryDropdown] = useState(false)
   const [showPriceDropdown, setShowPriceDropdown] = useState(false)
+  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid')
+  const [products, setProducts] = useState<Product[]>([])
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
-    if (categoryParam) {
-      const formatted = categoryParam.charAt(0).toUpperCase() + categoryParam.slice(1)
-      if (categories.includes(formatted)) {
-        setTempSelectedCategories([formatted])
-        setAppliedCategories([formatted])
+    const loadProducts = async () => {
+      setLoading(true)
+      try {
+        let categoriesToApply = tempSelectedCategories
+        let searchToApply = tempSearchQuery
+        
+        if (categoryParam) {
+          const formatted = categoryParam.charAt(0).toUpperCase() + categoryParam.slice(1)
+          if (categories.includes(formatted)) {
+            setTempSelectedCategories([formatted])
+            setAppliedCategories([formatted])
+            categoriesToApply = [formatted]
+          }
+        }
+        if (searchParam) {
+          setTempSearchQuery(searchParam)
+          setAppliedSearchQuery(searchParam)
+          searchToApply = searchParam
+        }
+        
+        const priceRangesFilter = tempSelectedPriceRanges.map(index => priceRanges[index])
+        const results = await searchProducts({
+          query: searchToApply || undefined,
+          categories: categoriesToApply.length > 0 ? categoriesToApply : undefined,
+          priceRanges: priceRangesFilter.length > 0 ? priceRangesFilter : undefined,
+        })
+        setProducts(results)
+      } catch (error) {
+        console.error('Error al cargar productos:', error)
+      } finally {
+        setLoading(false)
       }
     }
-    if (searchParam) {
-      setTempSearchQuery(searchParam)
-      setAppliedSearchQuery(searchParam)
-    }
+    
+    loadProducts()
   }, [categoryParam, searchParam])
 
-  const handleApplyFilters = () => {
+  const handleApplyFilters = async () => {
     setAppliedSearchQuery(tempSearchQuery)
     setAppliedCategories(tempSelectedCategories)
     setAppliedPriceRanges(tempSelectedPriceRanges)
     setShowCategoryDropdown(false)
     setShowPriceDropdown(false)
+    
+    // Cargar productos con los nuevos filtros
+    setLoading(true)
+    try {
+      const priceRangesFilter = tempSelectedPriceRanges.map(index => priceRanges[index])
+      const results = await searchProducts({
+        query: tempSearchQuery,
+        categories: tempSelectedCategories.length > 0 ? tempSelectedCategories : undefined,
+        priceRanges: priceRangesFilter.length > 0 ? priceRangesFilter : undefined,
+      })
+      setProducts(results)
+    } catch (error) {
+      console.error('Error al buscar productos:', error)
+    } finally {
+      setLoading(false)
+    }
   }
 
   const handleCategoryToggle = (category: string) => {
@@ -100,34 +122,7 @@ export function Catalog() {
   }
 
   const filteredProducts = useMemo(() => {
-    let result = [...mockProducts]
-
-    // Filtrar por categoría aplicada
-    if (appliedCategories.length === 0) {
-      return []
-    }
-    result = result.filter((p) => appliedCategories.includes(p.category))
-
-    // Filtrar por rangos de precio aplicados
-    if (appliedPriceRanges.length > 0) {
-      result = result.filter((p) => 
-        appliedPriceRanges.some(index => {
-          const range = priceRanges[index]
-          return p.price >= range.min && p.price < range.max
-        })
-      )
-    }
-
-    // Filtrar por búsqueda aplicada
-    if (appliedSearchQuery.trim()) {
-      const query = appliedSearchQuery.toLowerCase()
-      result = result.filter(
-        (p) =>
-          p.name.toLowerCase().includes(query) ||
-          p.description.toLowerCase().includes(query) ||
-          p.category.toLowerCase().includes(query)
-      )
-    }
+    let result = [...products]
 
     // Ordenar
     switch (sortBy) {
@@ -143,18 +138,31 @@ export function Catalog() {
     }
 
     return result
-  }, [appliedCategories, appliedPriceRanges, appliedSearchQuery, sortBy])
+  }, [products, sortBy])
 
-  const clearFilters = () => {
+  const clearFilters = async () => {
     setTempSearchQuery('')
-    setTempSelectedCategories([])
+    setTempSelectedCategories(categories)
     setTempSelectedPriceRanges([])
     setAppliedSearchQuery('')
-    setAppliedCategories([])
+    setAppliedCategories(categories)
     setAppliedPriceRanges([])
+    
+    // Recargar todos los productos
+    setLoading(true)
+    try {
+      const results = await searchProducts({
+        categories: categories,
+      })
+      setProducts(results)
+    } catch (error) {
+      console.error('Error al limpiar filtros:', error)
+    } finally {
+      setLoading(false)
+    }
   }
 
-  const hasActiveFilters = appliedSearchQuery || appliedCategories.length > 0 || appliedPriceRanges.length > 0
+  const hasActiveFilters = appliedSearchQuery || appliedCategories.length !== categories.length || appliedPriceRanges.length > 0
 
   return (
     <div className="min-h-screen bg-background">
@@ -165,7 +173,6 @@ export function Catalog() {
             Catálogo de productos
           </h1>
         </div>
-
         {/* Search Bar */}
         <div className="mb-6 mx-auto max-w-2xl">
           <div className="flex gap-2">
@@ -179,7 +186,7 @@ export function Catalog() {
             />
             <button
               onClick={handleApplyFilters}
-              className="rounded-lg bg-black px-6 py-2.5 text-sm font-medium text-white hover:bg-black/80"
+              className="rounded-lg bg-primary px-6 py-2.5 text-sm font-medium text-white hover:bg-primary/90 transition-colors cursor-pointer"
             >
               Buscar
             </button>
@@ -201,7 +208,7 @@ export function Catalog() {
         {/* Filters Bar */}
         <div className="mb-8 border-b border-border pb-4">
           <div className="flex flex-wrap items-center gap-4">
-            <span className="text-sm font-medium">Filter</span>
+            <span className="text-sm font-medium">Filtros:</span>
             
             {/* Category Dropdown */}
             <div className="relative">
@@ -238,9 +245,9 @@ export function Catalog() {
                     </div>
                     <button
                       onClick={handleApplyFilters}
-                      className="w-full rounded border border-black px-4 py-2 text-sm font-medium hover:bg-black hover:text-white transition-colors"
+                      className="w-full rounded border border-black bg-primary px-4 py-2 text-sm text-primary-foreground font-medium transition-colors hover:bg-primary/90 cursor-pointer"
                     >
-                      Apply
+                      Aplicar
                     </button>
                   </div>
                 </div>
@@ -259,13 +266,13 @@ export function Catalog() {
                     return next
                   })
                 }}
-                className="flex items-center gap-2 rounded-lg border border-border bg-card px-4 py-2 text-sm hover:bg-secondary"
+                className="flex items-center gap-2 rounded-lg border border-border bg-background px-4 py-2 text-sm hover:bg-secondary transition-colors cursor-pointer"
               >
                 Precio
                 <ChevronIcon className={`h-4 w-4 transition-transform ${showPriceDropdown ? 'rotate-180' : ''}`} />
               </button>
               {showPriceDropdown && (
-                <div className="absolute left-0 top-full mt-2 w-64 rounded-lg border border-border bg-card shadow-lg z-10">
+                <div className="absolute left-0 top-full mt-2 w-64 rounded-lg border border-border bg-background shadow-lg z-10">
                   <div className="p-4">
                     <div className="space-y-3 mb-4">
                       {priceRanges.map((range, index) => (
@@ -282,9 +289,9 @@ export function Catalog() {
                     </div>
                     <button
                       onClick={handleApplyFilters}
-                      className="w-full rounded border border-black px-4 py-2 text-sm font-medium hover:bg-black hover:text-white transition-colors"
+                      className="w-full rounded border border-black bg-primary px-4 py-2 text-sm text-primary-foreground font-medium hover:bg-primary/90 transition-colors cursor-pointer"
                     >
-                      Apply
+                      Aplicar
                     </button>
                   </div>
                 </div>
@@ -295,34 +302,64 @@ export function Catalog() {
             {hasActiveFilters && (
               <button
                 onClick={clearFilters}
-                className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground"
+                className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
               >
                 <CloseIcon className="h-4 w-4" />
                 Limpiar filtros
               </button>
             )}
 
-            {/* Sort Dropdown */}
-            <div className="ml-auto flex items-center gap-2">
-              <span className="text-sm font-medium">Ordenar por:</span>
-              <select
-                value={sortBy}
-                onChange={(e) => setSortBy(e.target.value as typeof sortBy)}
-                className="rounded-lg border border-border bg-card px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
-              >
-                <option value="price-asc">Precio: menor a mayor</option>
-                <option value="price-desc">Precio: mayor a menor</option>
-                <option value="name">Nombre A-Z</option>
-              </select>
+            {/* Sort Dropdown and View Toggle */}
+            <div className="ml-auto flex items-center gap-4">
+              {/* Sort Dropdown */}
+              <div className="flex items-center gap-2">
+                <span className="text-sm font-medium">Ordenar por:</span>
+                <select
+                  value={sortBy}
+                  onChange={(e) => setSortBy(e.target.value as typeof sortBy)}
+                  className="rounded-lg border border-border bg-card px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-ring transition-colors cursor-pointer"
+                >
+                  <option value="price-asc">Precio: menor a mayor</option>
+                  <option value="price-desc">Precio: mayor a menor</option>
+                  <option value="name">Nombre A-Z</option>
+                </select>
+              </div>
+
+              {/* View Toggle */}
+              <div className="flex rounded-lg border border-border">
+                <button
+                  onClick={() => setViewMode('grid')}
+                  className={`p-2 ${viewMode === 'grid' ? 'bg-secondary' : 'bg-card hover:bg-secondary/50'} rounded-l-lg transition-colors cursor-pointer`}
+                >
+                  <GridIcon className="h-5 w-5" />
+                </button>
+                <button
+                  onClick={() => setViewMode('list')}
+                  className={`p-2 ${viewMode === 'list' ? 'bg-secondary' : 'bg-card hover:bg-secondary/50'} rounded-r-lg transition-colors cursor-pointer`}
+                >
+                  <ListIcon className="h-5 w-5" />
+                </button>
+              </div>
             </div>
           </div>
         </div>
 
+        {/* Loading State */}
+        {loading && (
+          <div className="text-center py-12">
+            <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-primary border-r-transparent"></div>
+            <p className="mt-4 text-sm text-muted-foreground">Cargando productos...</p>
+          </div>
+        )}
+
         {/* Products Grid */}
-        <ProductGrid
-          products={filteredProducts}
-          noCategoriesSelected={appliedCategories.length === 0}
-        />
+        {!loading && (
+          <ProductView
+            products={filteredProducts}
+            noCategoriesSelected={appliedCategories.length === 0}
+            viewMode={viewMode}
+          />
+        )}
       </main>
     </div>
   )

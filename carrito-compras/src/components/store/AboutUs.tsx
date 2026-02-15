@@ -1,12 +1,9 @@
-'use client'
-
-
 export function AboutUs() {
     return (
         <section className="py-24 px-6 bg-background border-b border-border" id="nuestra-filosofia">
             <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-20 items-center">
                 <div className="space-y-8">
-                    <h2 className="text-4xl font-serif leading-tight font-bold ">La filosofía detrás <br /> de cada curva</h2>
+                    <h2 className="text-4xl font-serif font-bold ">La filosofía detrás <br /> de cada curva</h2>
                     <div className="space-y-6 text-muted-foreground">
                         <p>
                             Fundada bajo la premisa del minimalismo funcional, HOGAR ha evolucionado de un pequeño taller artesanal a una referencia en el diseño de interiores moderno. No fabricamos muebles; diseñamos experiencias táctiles y visuales que perduran en el tiempo.

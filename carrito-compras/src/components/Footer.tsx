@@ -1,7 +1,7 @@
 export function Footer() {
   return (
     <footer className="bg-card border-t border-border">
-      <div className=" max-w-7xl py-12 px-4 sm:px-6 lg:px-8">
+      <div className=" max-w-7xl py-6 px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
           {/* Brand */}
           <div className="md:col-span-1">
@@ -97,7 +97,7 @@ export function Footer() {
                 />
                 <button
                   type="submit"
-                  className="rounded-md bg-black px-4 py-2 text-sm font-medium text-white hover:bg-black/80 cursor-pointer"
+                  className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:opacity-90 cursor-pointer"
                 >
                   Enviar
                 </button>
@@ -110,7 +110,7 @@ export function Footer() {
       <div className="bg-black/5 border-t border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <p className="text-center text-sm text-black/70">
-            &copy; {new Date().getFullYear()} HOGAR. Todos los derechos reservados.
+            &copy; {new Date().getFullYear()} HOGAR. Desarrollado por Michael Peñaloza.
           </p>
         </div>
       </div>

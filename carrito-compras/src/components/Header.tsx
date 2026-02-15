@@ -1,9 +1,12 @@
-'use client'
 import { useState } from 'react'
 import { useNavigate } from 'react-router'
 import logo from '@/assets/Hogar-logo.png'
 import { useCart } from '../context/CartContext'
-import { CartSidebar } from './store/CartSideBar'
+import { CartSidebar } from '@/components/cart/CartSideBar'
+import { CloseIcon } from '@/assets/icons/CloseIcon'
+import { MenuIcon } from '@/assets/icons/MenuIcon'
+import { SearchIcon } from '@/assets/icons/SearchIcon'
+import { CartIcon } from '@/assets/icons/CartIcon'
 
 interface HeaderProps {
   onSearch?: (query: string) => void
@@ -28,38 +31,6 @@ export function Header({ onSearch }: HeaderProps) {
     navigate(`/productos${params.toString() ? `?${params.toString()}` : ''}`)
     onSearch?.(query)
     setMobileMenuOpen(false)
-  }
-
-  function SearchIcon({ className }: { className?: string }) {
-    return (
-      <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-      </svg>
-    )
-  }
-
-  function CartIcon({ className }: { className?: string }) {
-    return (
-      <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-      </svg>
-    )
-  }
-
-  function MenuIcon({ className }: { className?: string }) {
-    return (
-      <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-      </svg>
-    )
-  }
-
-  function CloseIcon({ className }: { className?: string }) {
-    return (
-      <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-      </svg>
-    )
   }
 
   return (
@@ -121,11 +92,11 @@ export function Header({ onSearch }: HeaderProps) {
             {/*Cart Button */}
             <button
               onClick={toggleCart}
-              className="relative flex size-10 items-center justify-center rounded-lg text-foreground transition-colors hover:bg-secondary"
+              className="relative flex size-10 items-center justify-center rounded-lg text-foreground transition-colors hover:bg-secondary cursor-pointer"
             >
               <CartIcon className="h-5 w-5" />
               {itemCount > 0 && (
-                <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-accent text-xs font-medium text-accent-foreground">
+                <span className="absolute -top-1 -right-1 flex size-4 items-center justify-center rounded-full bg-primary text-xs font-medium text-primary-foreground">
                   {itemCount}
                 </span>
               )}

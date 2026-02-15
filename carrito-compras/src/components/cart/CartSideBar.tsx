@@ -1,30 +1,8 @@
-'use client'
-
 import { useCart } from "@/context/CartContext"
-
-function MinusIcon({ className }: { className?: string }) {
-    return (
-        <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 12H4" />
-        </svg>
-    )
-}
-
-function PlusIcon({ className }: { className?: string }) {
-    return (
-        <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-        </svg>
-    )
-}
-
-function TrashIcon({ className }: { className?: string }) {
-    return (
-        <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-        </svg>
-    )
-}
+import { TrashIcon } from "@/assets/icons/TrashIcon"
+import { MinusIcon } from "@/assets/icons/MinusIcon"
+import { PlusIcon } from "@/assets/icons/PlusIcon"
+import { Link } from "react-router"
 
 export function CartSidebar() {
     const { state, removeItem, updateQuantity, getTotal, closeCart } = useCart()
@@ -45,13 +23,13 @@ export function CartSidebar() {
                     <p className="mt-1 text-sm text-muted-foreground">
                         Añade algunos productos para comenzar
                     </p>
-                    <a
-                        href="/"
+                    <Link
+                        to="/"
                         onClick={closeCart}
                         className="mt-6 inline-flex items-center justify-center rounded-lg bg-primary px-6 py-3 text-sm font-medium text-secondary transition-colors hover:bg-primary/90"
                     >
                         Explorar Productos
-                    </a>
+                    </Link>
                 </div>
             </div>
         )
@@ -63,7 +41,7 @@ export function CartSidebar() {
             <div className="flex-1 overflow-y-auto py-4">
                 <ul className="space-y-4">
                     {items.map((item) => (
-                        <li key={item.product.id} className="flex gap-4">
+                        <li key={item.product.code} className="flex gap-4">
                             <div className="relative h-20 w-20 flex-shrink-0 overflow-hidden rounded-lg bg-secondary">
                                 <img
                                     src={item.product.image || "/placeholder.svg"}
@@ -79,7 +57,7 @@ export function CartSidebar() {
                                     </h4>
                                     <button
                                         className="flex h-6 w-6 items-center justify-center rounded text-muted-foreground transition-colors hover:text-destructive"
-                                        onClick={() => removeItem(item.product.id)}
+                                        onClick={() => removeItem(item.product.code)}
                                     >
                                         <TrashIcon className="h-4 w-4" />
                                         <span className="sr-only">Eliminar</span>
@@ -91,7 +69,7 @@ export function CartSidebar() {
                                 <div className="mt-auto flex items-center gap-2">
                                     <button
                                         className="flex h-7 w-7 items-center justify-center rounded-md border border-border bg-transparent text-foreground transition-colors hover:bg-secondary"
-                                        onClick={() => updateQuantity(item.product.id, item.quantity - 1)}
+                                        onClick={() => updateQuantity(item.product.code, item.quantity - 1)}
                                     >
                                         <MinusIcon className="h-3 w-3" />
                                         <span className="sr-only">Reducir cantidad</span>
@@ -101,7 +79,7 @@ export function CartSidebar() {
                                     </span>
                                     <button
                                         className="flex h-7 w-7 items-center justify-center rounded-md border border-border bg-transparent text-foreground transition-colors hover:bg-secondary"
-                                        onClick={() => updateQuantity(item.product.id, item.quantity + 1)}
+                                        onClick={() => updateQuantity(item.product.code, item.quantity + 1)}
                                     >
                                         <PlusIcon className="h-3 w-3" />
                                         <span className="sr-only">Aumentar cantidad</span>
@@ -125,13 +103,13 @@ export function CartSidebar() {
                     <span className="text-base font-semibold">{formatPrice(getTotal())}</span>
                 </div>
                 <div className="mt-4 space-y-2">
-                    <a
-                        href="/carrito"
+                    <Link
+                        to="/carrito"
                         onClick={closeCart}
                         className="flex w-full items-center justify-center rounded-lg bg-primary px-6 py-3 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
                     >
                         Ver Carrito
-                    </a>
+                    </Link>
                     <button
                         onClick={closeCart}
                         className="flex w-full items-center justify-center rounded-lg border border-border bg-transparent px-6 py-3 text-sm font-medium text-foreground transition-colors hover:bg-secondary"

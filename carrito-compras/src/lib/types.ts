@@ -1,14 +1,15 @@
 // Tipos para la tienda online
 
 export interface Product {
-  id: string
+  code: string
   name: string
   description: string
   price: number
   image: string
   category: string
   stock: number
-}
+  discount: number
+}  
 
 export interface CartItem {
   product: Product
@@ -22,8 +23,8 @@ export interface CartState {
 
 export type CartAction =
   | { type: 'ADD_ITEM'; product: Product }
-  | { type: 'REMOVE_ITEM'; productId: string }
-  | { type: 'UPDATE_QUANTITY'; productId: string; quantity: number }
+  | { type: 'REMOVE_ITEM'; productCode: string }
+  | { type: 'UPDATE_QUANTITY'; productCode: string; quantity: number }
   | { type: 'CLEAR_CART' }
   | { type: 'TOGGLE_CART' }
   | { type: 'CLOSE_CART' }

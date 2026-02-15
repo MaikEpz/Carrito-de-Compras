@@ -1,5 +1,3 @@
-'use client'
-
 import { createContext, useContext, useReducer, type ReactNode } from 'react'
 import type { CartState, CartAction, Product } from '../lib/types'
 
@@ -12,13 +10,13 @@ function cartReducer(state: CartState, action: CartAction): CartState {
   switch (action.type) {
     case 'ADD_ITEM': {
       const existingItem = state.items.find(
-        (item) => item.product.id === action.product.id
+        (item) => item.product.code === action.product.code
       )
       if (existingItem) {
         return {
           ...state,
           items: state.items.map((item) =>
-            item.product.id === action.product.id
+            item.product.code === action.product.code
               ? { ...item, quantity: item.quantity + 1 }
               : item
           ),
@@ -32,21 +30,21 @@ function cartReducer(state: CartState, action: CartAction): CartState {
     case 'REMOVE_ITEM':
       return {
         ...state,
-        items: state.items.filter((item) => item.product.id !== action.productId),
+        items: state.items.filter((item) => item.product.code !== action.productCode),
       }
     case 'UPDATE_QUANTITY': {
       if (action.quantity <= 0) {
         return {
           ...state,
           items: state.items.filter(
-            (item) => item.product.id !== action.productId
+            (item) => item.product.code !== action.productCode
           ),
         }
       }
       return {
         ...state,
         items: state.items.map((item) =>
-          item.product.id === action.productId
+          item.product.code === action.productCode
             ? { ...item, quantity: action.quantity }
             : item
         ),
@@ -66,8 +64,8 @@ function cartReducer(state: CartState, action: CartAction): CartState {
 interface CartContextType {
   state: CartState
   addItem: (product: Product) => void
-  removeItem: (productId: string) => void
-  updateQuantity: (productId: string, quantity: number) => void
+  removeItem: (productCode: string) => void
+  updateQuantity: (productCode: string, quantity: number) => void
   clearCart: () => void
   toggleCart: () => void
   closeCart: () => void
@@ -84,12 +82,12 @@ export function CartProvider({ children }: { children: ReactNode }) {
     dispatch({ type: 'ADD_ITEM', product })
   }
 
-  const removeItem = (productId: string) => {
-    dispatch({ type: 'REMOVE_ITEM', productId })
+  const removeItem = (productCode: string) => {
+    dispatch({ type: 'REMOVE_ITEM', productCode })
   }
 
-  const updateQuantity = (productId: string, quantity: number) => {
-    dispatch({ type: 'UPDATE_QUANTITY', productId, quantity })
+  const updateQuantity = (productCode: string, quantity: number) => {
+    dispatch({ type: 'UPDATE_QUANTITY', productCode, quantity })
   }
 
   const clearCart = () => {

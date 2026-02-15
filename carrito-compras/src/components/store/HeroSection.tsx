@@ -1,11 +1,4 @@
-
-function ArrowRightIcon({ className }: { className?: string }) {
-  return (
-    <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-    </svg>
-  )
-}
+import { ArrowRightIcon } from "@/assets/icons/ArrowRightIcon"
 
 export function HeroSection() {
   return (
@@ -23,7 +16,7 @@ export function HeroSection() {
           <div className="mt-8 flex flex-col gap-4 sm:flex-row">
             <a
               href="/catalogo"
-              className="inline-flex items-center justify-center rounded-lg bg-black px-6 py-3 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+              className="inline-flex items-center justify-center rounded-lg bg-primary px-6 py-3 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
             >
               Ver Catalogo
               <ArrowRightIcon className="ml-2 h-4 w-4" />
