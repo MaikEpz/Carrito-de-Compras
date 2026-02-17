@@ -8,7 +8,7 @@ export function Footer() {
             <a href="/" className="inline-block">
               <span className="font-serif text-2xl font-bold text-foreground">HOGAR</span>
             </a>
-            <p className="mt-4 text-sm text-black/70
+            <p className="mt-4 text-sm text-muted-foreground
             ">
               Diseño elegante para transformar tu hogar con piezas únicas y de calidad.
             </p>
@@ -21,26 +21,26 @@ export function Footer() {
             </h3>
             <ul className="mt-4 space-y-3">
               <li>
-                <a href="/" className="text-sm text-black/70
-                 hover:text-black">
+                <a href="/" className="text-sm text-muted-foreground
+                 hover:text-foreground">
                   Muebles
                 </a>
               </li>
               <li>
-                <a href="/" className="text-sm text-black/70
-                 hover:text-black">
+                <a href="/" className="text-sm text-muted-foreground
+                 hover:text-foreground">
                   Decoración
                 </a>
               </li>
               <li>
-                <a href="/" className="text-sm text-black/70
-                 hover:text-black">
+                <a href="/" className="text-sm text-muted-foreground
+                 hover:text-foreground">
                   Iluminación
                 </a>
               </li>
               <li>
-                <a href="/" className="text-sm text-black/70
-                 hover:text-black">
+                <a href="/" className="text-sm text-muted-foreground
+                 hover:text-foreground">
                   Textiles
                 </a>
               </li>
@@ -53,26 +53,26 @@ export function Footer() {
             </h3>
             <ul className="mt-4 space-y-3">
               <li>
-                <a href="/" className="text-sm text-black/70
-                 hover:text-black">
+                <a href="/inicio#AboutUs" className="text-sm text-muted-foreground
+                 hover:text-foreground">
                   Sobre Nosotros
                 </a>
               </li>
               <li>
-                <a href="/" className="text-sm text-black/70
-                 hover:text-black">
+                <a href="/inicio#OurDesigners" className="text-sm text-muted-foreground
+                 hover:text-foreground">
                   Nuestros Diseñadores
                 </a>
               </li>
               <li>
-                <a href="/" className="text-sm text-black/70
-                 hover:text-black">
+                <a href="/ofertas" className="text-sm text-muted-foreground
+                 hover:text-foreground">
                   Ofertas
                 </a>
               </li>
               <li>
-                <a href="/" className="text-sm text-black/70
-                 hover:text-black">
+                <a href="/contactanos" className="text-sm text-muted-foreground
+                 hover:text-foreground">
                   Contacto
                 </a>
               </li>
@@ -83,7 +83,7 @@ export function Footer() {
             <h3 className="text-sm font-bold uppercase tracking-wider text-foreground">
               Newsletter
             </h3>
-            <p className="mt-4 text-sm text-black/70
+            <p className="mt-4 text-sm text-muted-foreground
             ">
               Suscríbete para recibir novedades y ofertas exclusivas.
             </p>
@@ -92,7 +92,7 @@ export function Footer() {
                 <input
                   type="email"
                   placeholder="tu@email.com"
-                  className="flex-1 rounded-md border border-input bg-background px-3 py-2 text-sm placeholder:text-black/70
+                  className="flex-1 rounded-md border border-input bg-background px-3 py-2 text-sm placeholder:text-muted-foreground
                    focus:outline-none focus:ring-2 focus:ring-ring"
                 />
                 <button
@@ -107,9 +107,9 @@ export function Footer() {
         </div>
       </div>
 
-      <div className="bg-black/5 border-t border-gray-200">
+      <div className="bg-secondary/50 border-t border-border text-primary-foreground">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <p className="text-center text-sm text-black/70">
+          <p className="text-center text-sm text-muted-foreground">
             &copy; {new Date().getFullYear()} HOGAR. Desarrollado por Michael Peñaloza.
           </p>
         </div>

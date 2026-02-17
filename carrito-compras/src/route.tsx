@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router";
+import { createBrowserRouter, Navigate } from "react-router";
 import { Layout } from "./Layout";
 import { Home } from "@/components/Home";
 import { Catalogo } from "@/components/product/Catalogo";
@@ -13,7 +13,8 @@ export const router = createBrowserRouter([
     path: "/",
     Component: Layout,
     children: [
-      { index: true, Component: Home },
+      { index: true, element: <Navigate to="/inicio" replace /> },
+      { path: "inicio", Component: Home },
       { path: "catalogo", Component: Catalogo },
       { path: "catalogo/:code", Component: ProductDetail },
       { path: "ofertas", Component: Offer },

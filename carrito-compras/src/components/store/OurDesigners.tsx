@@ -37,7 +37,7 @@ export function OurDesigners() {
     ];
 
     return (
-        <section className="py-24 px-6 bg-background">
+        <section className="py-20 px-6 bg-background" id='OurDesigners'>
             <div className="mx-auto max-w-7xl">
                 <div className="mb-10 text-center">
                     <h2 className="mb-4 text-4xl font-bold font-serif text-foreground">Nuestros Diseñadores</h2>
@@ -51,7 +51,7 @@ export function OurDesigners() {
                             <div className="relative mb-6 aspect-[4/5] overflow-hidden">
                                 <img
                                     alt={designer.alt}
-                                    className="h-full w-full object-cover grayscale transition-all duration-500 group-hover:grayscale-0 group-hover:scale-105"
+                                    className="size-full object-cover grayscale transition-all duration-500 group-hover:grayscale-0 group-hover:scale-105"
                                     src={designer.image}
                                 />
                                 <div className="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black/60 to-transparent p-6 opacity-0 transition-opacity group-hover:opacity-100">
@@ -62,7 +62,7 @@ export function OurDesigners() {
                             <p className="mb-4 text-xs  uppercase tracking-widest text-muted-foreground">
                                 {designer.role}
                             </p>
-                            <p className="leading-relaxed text-muted-foreground">
+                            <p className="text-muted-foreground">
                                 {designer.description}
                             </p>
                         </div>

@@ -45,13 +45,13 @@ export function CategoriesSection() {
                     {categories.map((category) => (
                         <a
                             key={category.name}
-                            href={`/?categoria=${category.name.toLowerCase()}`}
+                            href={`/catalogo?categoria=${category.name.toLowerCase()}`}
                             className="group relative overflow-hidden rounded-xl"
                         >
                             <div className="aspect-[4/5] relative bg-secondary">
 
                                 <img
-                                    src={category.image || "/placeholder.svg"}
+                                    src={category.image}
                                     alt={category.name}
                                     className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
                                 />

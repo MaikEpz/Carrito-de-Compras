@@ -135,32 +135,32 @@ export function Header({ onSearch }: HeaderProps) {
               {/* Mobile Nav Links */}
               <nav className="flex flex-col gap-2">
                 <a
-                  href="/"
+                  href="/categorias"
                   className="rounded-md px-3 py-2 text-sm font-medium text-foreground hover:bg-secondary"
                   onClick={() => setMobileMenuOpen(false)}
                 >
-                  Inicio
+                  Categorias
                 </a>
                 <a
-                  href="/"
+                  href="/ofertas"
                   className="rounded-md px-3 py-2 text-sm font-medium text-foreground hover:bg-secondary"
                   onClick={() => setMobileMenuOpen(false)}
                 >
-                  Muebles
+                  Ofertas
                 </a>
                 <a
-                  href="/"
+                  href="/catalogo"
                   className="rounded-md px-3 py-2 text-sm font-medium text-foreground hover:bg-secondary"
                   onClick={() => setMobileMenuOpen(false)}
                 >
-                  Decoración
+                  Catalogo
                 </a>
                 <a
-                  href="/"
+                  href="/contactanos"
                   className="rounded-md px-3 py-2 text-sm font-medium text-foreground hover:bg-secondary"
                   onClick={() => setMobileMenuOpen(false)}
                 >
-                  Iluminación
+                  Contactanos
                 </a>
               </nav>
             </div>
