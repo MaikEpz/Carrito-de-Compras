@@ -10,6 +10,10 @@ interface ProductCardProps {
 
 export function ProductCard({ product, viewMode = 'grid' }: ProductCardProps) {
     const { addItem } = useCart()
+    const hasDiscount = product.discount > 0
+    const discountedPrice = hasDiscount
+        ? product.price - (product.price * product.discount) / 100
+        : product.price
 
     const formatPrice = (price: number) => {
         return new Intl.NumberFormat('es-ES', {
@@ -37,6 +41,11 @@ export function ProductCard({ product, viewMode = 'grid' }: ProductCardProps) {
                         alt={product.name}
                         className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
                     />
+                    {product.discount > 0 && (
+                        <div className="absolute top-3 right-3 bg-primary text-primary-foreground px-2 py-1 rounded-md text-xs font-semibold">
+                            -{product.discount}%
+                        </div>
+                    )}
                 </div>
                 <div className={`p-4 ${viewMode === 'list' ? 'flex flex-col justify-between flex-1' : ''}`}>
                     <div>
@@ -53,9 +62,16 @@ export function ProductCard({ product, viewMode = 'grid' }: ProductCardProps) {
                         )}
                     </div>
                     <div className="flex items-center justify-between mt-2">
-                        <p className="text-lg font-semibold text-foreground">
-                            {formatPrice(product.price)}
-                        </p>
+                        <div className="flex items-center gap-2">
+                            {hasDiscount && (
+                                <p className="text-sm text-muted-foreground line-through">
+                                    {formatPrice(product.price)}
+                                </p>
+                            )}
+                            <p className="text-lg font-semibold text-foreground">
+                                {formatPrice(discountedPrice)}
+                            </p>
+                        </div>
                         <button
                             onClick={handleAddToCart}
                             className="flex h-9 w-9 items-center justify-center rounded-full bg-primary text-white transition-all hover:scale-110 cursor-pointer"

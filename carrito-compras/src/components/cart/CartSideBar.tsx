@@ -14,6 +14,9 @@ export function CartSidebar() {
             currency: 'EUR',
         }).format(price)
     }
+    const getDiscountedPrice = (price: number, discount: number) => {
+        return discount > 0 ? price - (price * discount) / 100 : price
+    }
 
     if (items.length === 0) {
         return (
@@ -40,7 +43,13 @@ export function CartSidebar() {
             {/* Cart Items */}
             <div className="flex-1 overflow-y-auto py-4">
                 <ul className="space-y-4">
-                    {items.map((item) => (
+                    {items.map((item) => {
+                        const hasDiscount = item.product.discount > 0
+                        const discountedPrice = getDiscountedPrice(
+                            item.product.price,
+                            item.product.discount
+                        )
+                        return (
                         <li key={item.product.code} className="flex gap-4">
                             <div className="relative h-20 w-20 flex-shrink-0 overflow-hidden rounded-lg bg-secondary">
                                 <img
@@ -63,9 +72,16 @@ export function CartSidebar() {
                                         <span className="sr-only">Eliminar</span>
                                     </button>
                                 </div>
-                                <p className="text-sm text-muted-foreground">
-                                    {formatPrice(item.product.price)}
-                                </p>
+                                <div className="text-sm">
+                                    {hasDiscount && (
+                                        <p className="text-muted-foreground line-through">
+                                            {formatPrice(item.product.price)}
+                                        </p>
+                                    )}
+                                    <p className="text-muted-foreground">
+                                        {formatPrice(discountedPrice)}
+                                    </p>
+                                </div>
                                 <div className="mt-auto flex items-center gap-2">
                                     <button
                                         className="flex h-7 w-7 items-center justify-center rounded-md border border-border bg-transparent text-foreground transition-colors hover:bg-secondary"
@@ -87,7 +103,7 @@ export function CartSidebar() {
                                 </div>
                             </div>
                         </li>
-                    ))}
+                        )})}
                 </ul>
             </div>
 

@@ -19,6 +19,9 @@ export function CartView() {
             currency: 'EUR',
         }).format(price)
     }
+    const getDiscountedPrice = (price: number, discount: number) => {
+        return discount > 0 ? price - (price * discount) / 100 : price
+    }
 
     const subtotal = getTotal()
     const shipping = subtotal >= 100 ? 0 : 9.99
@@ -29,7 +32,7 @@ export function CartView() {
                 {/* Breadcrumb */}
                 <nav className="mb-8">
                     <Link
-                        to="/"
+                        to="/catalogo"
                         className="inline-flex items-center text-sm text-muted-foreground hover:text-foreground"
                     >
                         <ArrowLeftIcon className="mr-2 h-4 w-4" />
@@ -52,7 +55,7 @@ export function CartView() {
                             Parece que aún no has añadido ningún producto a tu carrito.
                         </p>
                         <Link
-                            to="/"
+                            to="/catalogo"
                             className="mt-8 inline-flex items-center justify-center rounded-lg bg-primary px-6 py-3 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
                         >
                             Explorar Productos
@@ -76,7 +79,13 @@ export function CartView() {
                             </div>
 
                             <ul className="divide-y divide-border">
-                                {items.map((item) => (
+                                {items.map((item) => {
+                                    const hasDiscount = item.product.discount > 0
+                                    const discountedTotal =
+                                        getDiscountedPrice(item.product.price, item.product.discount) *
+                                        item.quantity
+                                    const originalTotal = item.product.price * item.quantity
+                                    return (
                                     <li key={item.product.code} className="flex gap-6 py-6">
                                         {/* Product Image */}
                                         <Link
@@ -105,9 +114,16 @@ export function CartView() {
                                                         {item.product.category}
                                                     </p>
                                                 </div>
-                                                <p className="text-lg font-semibold text-foreground">
-                                                    {formatPrice(item.product.price * item.quantity)}
-                                                </p>
+                                                <div className="text-right">
+                                                    {hasDiscount && (
+                                                        <p className="text-sm text-muted-foreground line-through">
+                                                            {formatPrice(originalTotal)}
+                                                        </p>
+                                                    )}
+                                                    <p className="text-lg font-semibold text-foreground">
+                                                        {formatPrice(discountedTotal)}
+                                                    </p>
+                                                </div>
                                             </div>
 
                                             <div className="mt-auto flex items-center justify-between">
@@ -147,7 +163,7 @@ export function CartView() {
                                             </div>
                                         </div>
                                     </li>
-                                ))}
+                                    )})}
                             </ul>
                         </div>
                         {/* Order Summary */}

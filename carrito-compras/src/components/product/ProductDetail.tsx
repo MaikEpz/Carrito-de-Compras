@@ -51,6 +51,9 @@ export function ProductDetail() {
             currency: 'EUR',
         }).format(price)
     }
+    const getDiscountedPrice = (price: number, discount: number) => {
+        return discount > 0 ? price - (price * discount) / 100 : price
+    }
 
     return (
         <main className="flex-1">
@@ -58,7 +61,7 @@ export function ProductDetail() {
                 {/* Breadcrumb */}
                 <nav className="mb-8">
                     <a
-                        href="/"
+                        href="/catalogo"
                         className="inline-flex items-center text-sm text-muted-foreground hover:text-foreground"
                     >
                         <ArrowLeftIcon className="mr-2 size-3" />
@@ -67,15 +70,12 @@ export function ProductDetail() {
                 </nav>
                 {/* Loading state */}
                 {loading && (
-
                     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-
                         <div className="text-center py-12">
                             <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-primary border-r-transparent"></div>
                             <p className="mt-4 text-sm text-muted-foreground">Cargando producto...</p>
                         </div>
                     </div>
-
                 )}
 
                 {product === null && !loading && (
@@ -117,9 +117,16 @@ export function ProductDetail() {
                             {product.name}
                         </h1>
 
-                        <p className="mt-4 text-3xl font-semibold text-foreground">
-                            {formatPrice(product.price)}
-                        </p>
+                        <div className="mt-4 flex items-baseline gap-3">
+                            {product.discount > 0 && (
+                                <p className="text-lg text-muted-foreground line-through">
+                                    {formatPrice(product.price)}
+                                </p>
+                            )}
+                            <p className="text-3xl font-semibold text-foreground">
+                                {formatPrice(getDiscountedPrice(product.price, product.discount))}
+                            </p>
+                        </div>
 
                         <p className="mt-6 text-muted-foreground leading-relaxed">
                             {product.description}

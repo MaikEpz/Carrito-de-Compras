@@ -9,7 +9,17 @@ export interface Product {
   category: string
   stock: number
   discount: number
-}  
+}
+
+export interface Designer {
+  code: string
+  name: string
+  role: string
+  quote: string
+  description: string
+  image: string
+  alt: string
+}
 
 export interface CartItem {
   product: Product

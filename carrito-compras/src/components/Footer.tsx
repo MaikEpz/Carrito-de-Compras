@@ -99,7 +99,7 @@ export function Footer() {
                   type="submit"
                   className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:opacity-90 cursor-pointer"
                 >
-                  Enviar
+                  Suscribirse
                 </button>
               </div>
             </form>

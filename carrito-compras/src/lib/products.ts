@@ -87,13 +87,10 @@ export const mockProducts: Product[] = [
 
 // Simula una llamada a la API REST
 export async function fetchProducts(): Promise<Product[]> {
-  // Simular latencia de red
-  await new Promise((resolve) => setTimeout(resolve, 800))
   return mockProducts
 }
 
 export async function fetchProductByCode(code: string): Promise<Product | null> {
-  await new Promise((resolve) => setTimeout(resolve, 500))
   return mockProducts.find((p) => p.code === code) || null
 }
 
@@ -104,8 +101,6 @@ export interface SearchFilters {
 }
 
 export async function searchProducts(filters: SearchFilters = {}): Promise<Product[]> {
-  await new Promise((resolve) => setTimeout(resolve, 300))
-  
   let result = [...mockProducts]
   
   // Filtrar por categorías

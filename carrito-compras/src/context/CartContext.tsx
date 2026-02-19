@@ -104,7 +104,12 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   const getTotal = () => {
     return state.items.reduce(
-      (total, item) => total + item.product.price * item.quantity,
+      (total, item) => {
+        const discountedPrice = item.product.discount > 0
+          ? item.product.price - (item.product.price * item.product.discount) / 100
+          : item.product.price
+        return total + discountedPrice * item.quantity
+      },
       0
     )
   }

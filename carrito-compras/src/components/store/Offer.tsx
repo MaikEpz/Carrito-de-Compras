@@ -13,9 +13,7 @@ export function Offer() {
     // Simular carga inicial de productos
     const loadProducts = async () => {
       setIsLoading(true)
-      // Simular latencia de red
-      await new Promise((resolve) => setTimeout(resolve, 800))
-      setProducts(mockProducts)
+      setProducts(mockProducts.filter(product => product.discount > 0))
       setIsLoading(false)
     }
     loadProducts()
