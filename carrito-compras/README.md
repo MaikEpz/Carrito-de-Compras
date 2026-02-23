@@ -121,31 +121,10 @@ bun install
 # Iniciar servidor de desarrollo
 npm run dev
 # o con bun
-bun dev
+bun run dev
 
-# La aplicación estará disponible en http://localhost:5173
 ```
 
-### Construcción
-
-```bash
-# Generar build de producción
-npm run build
-# o con bun
-bun run build
-
-# Preview del build
-npm run preview
-# o con bun
-bun preview
-```
-
-## 📦 Scripts Disponibles
-
-- `dev` - Inicia el servidor de desarrollo
-- `build` - Genera el build de producción
-- `preview` - Preview del build de producción
-- `lint` - Ejecuta ESLint
 
 ## 🎨 Características de Diseño
 
