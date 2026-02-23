@@ -153,28 +153,9 @@ bun preview
 - **Paleta Neutral** - Colores tierra y tonos suaves
 - **Tipografía Elegante** - Fuentes serif para títulos
 - **Animaciones Sutiles** - Transiciones suaves
-- **Dark Mode Ready** - Preparado para tema oscuro
 
-## 🔮 Próximas Mejoras
-
-- [ ] Integración con API real
-- [ ] Persistencia del carrito en localStorage
-- [ ] Sistema de autenticación
-- [ ] Proceso de checkout completo
-- [ ] Pasarela de pago
-- [ ] Panel de administración
-- [ ] Sistema de reviews
-- [ ] Lista de deseos
-- [ ] Comparador de productos
-
-## 📝 Licencia
-
-Este proyecto es de código abierto y está disponible bajo la licencia MIT.
 
 ## 👤 Autor
 
-Desarrollado con ❤️ por [Tu Nombre]
+Desarrollado por Michael Peñaloza 
 
----
-
-⭐ Si te gusta este proyecto, no olvides darle una estrella en GitHub
