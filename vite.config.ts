@@ -4,12 +4,12 @@ import tailwindcss from '@tailwindcss/vite'
 import path from 'path'
 
 // https://vite.dev/config/
-export default defineConfig({
+export default defineConfig(({ command }) => ({
   plugins: [react(), tailwindcss()],
-  base: '/Carrito-de-Compras/',
+  base: command === 'serve' ? '/' : '/Carrito-de-Compras/',
   resolve: {
     alias: {
       '@': path.resolve(__dirname, "./src"),
     },
   },
-})
+}))
