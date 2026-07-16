@@ -108,15 +108,21 @@ const mockProducts: Product[] = [
   },
 ]
 
+const base = import.meta.env.BASE_URL
+const productsWithBase = mockProducts.map(p => ({
+  ...p,
+  image: p.image ? `${base}${p.image.replace(/^\//, '')}` : ''
+}))
+
 export const mockProductRepository: ProductRepository = {
   async getAll() {
-    return mockProducts
+    return productsWithBase
   },
   async getByCode(code: string) {
-    return mockProducts.find((product) => product.code === code) || null
+    return productsWithBase.find((product) => product.code === code) || null
   },
   async search(filters: SearchFilters = {}) {
-    let result = [...mockProducts]
+    let result = [...productsWithBase]
 
     if (filters.categories && filters.categories.length > 0) {
       result = result.filter((product) =>

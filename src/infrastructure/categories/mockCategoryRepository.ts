@@ -41,8 +41,14 @@ const mockCategories: Category[] = [
   },
 ]
 
+const base = import.meta.env.BASE_URL
+const categoriesWithBase = mockCategories.map(c => ({
+  ...c,
+  image: c.image ? `${base}${c.image.replace(/^\//, '')}` : ''
+}))
+
 export const mockCategoryRepository: CategoryRepository = {
   async getAll() {
-    return mockCategories
+    return categoriesWithBase
   },
 }
