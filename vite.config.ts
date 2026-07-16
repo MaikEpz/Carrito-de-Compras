@@ -6,7 +6,8 @@ import path from 'path'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react(), tailwindcss()],
-    resolve: {
+  base: '/Carrito-de-Compras/',
+  resolve: {
     alias: {
       '@': path.resolve(__dirname, "./src"),
     },
